@@ -18,7 +18,8 @@ const YogaEnrollmentForm = () => {
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/batches");
+        console.log(process.env.REACT_APP_SITE);
+        const response = await fetch(`https://flexmoney-backend-o2ny.onrender.com/api/batches`);
         const batchesData = await response.json();
         setBatches(batchesData);
       } catch (error) {
@@ -27,7 +28,7 @@ const YogaEnrollmentForm = () => {
     };
 
     fetchBatches();
-  }, []); // Empty dependency array ensures this effect runs only once, similar to componentDidMount
+  }, []); 
 
   const handleInputChange = (e) => {
     setFormData({
@@ -37,12 +38,10 @@ const YogaEnrollmentForm = () => {
   };
 
   const calculateAmount = () => {
-    // For simplicity, let's assume a fixed monthly fee for now
     setAmount(500);
   };
 
   const handlePayment = () => {
-    // For simplicity, just set payment success to true
     setPaymentSuccess(true);
   };
 
@@ -50,7 +49,7 @@ const YogaEnrollmentForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5001/api/users/register", {
+      const response = await fetch("https://flexmoney-backend-o2ny.onrender.com/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,23 +61,22 @@ const YogaEnrollmentForm = () => {
         const user = await response.json();
         console.log("User registered successfully:", user);
 
-        setRegistrationStatus("success"); // Set registration status to success
-        // You can perform any additional actions here after successful registration
+        setRegistrationStatus("success"); 
       } else if (response.status === 400) {
         const errorData = await response.json();
         console.error("Invalid input data:", errorData);
-        setRegistrationStatus("error"); // Set registration status to error
+        setRegistrationStatus("error"); 
       } else if (response.status === 409) {
         const errorData = await response.json();
         console.error("Email already exists:", errorData);
-        setRegistrationStatus("error"); // Set registration status to error
+        setRegistrationStatus("error"); 
       } else {
         console.error("Unexpected error:", response.status);
-        setRegistrationStatus("error"); // Set registration status to error
+        setRegistrationStatus("error"); 
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      setRegistrationStatus("error"); // Set registration status to error
+      setRegistrationStatus("error"); 
     }
   };
 
